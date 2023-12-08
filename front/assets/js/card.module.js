@@ -55,12 +55,10 @@ export function addCardToList(cardData) {
       const tagClone = document.importNode(tagTemplate.content, true);
       tagClone.querySelector('[slot="tag-name"]').textContent = tag.name;
       tagContainer.prepend(tagClone);
-      // tagClone.querySelector('[slot="tag-color"]').style.backgroundColor = tag.color;
-    });
+      //tagClone.querySelector('[slot="tag-close-btn"]').addEventListener('click', async () => {});
+    })
   }
-  const listElem = document.querySelector(
-    `ul.column[data-id="${cardData.list_id}"] [slot="list-content"]`,
-  );
+  const listElem = document.querySelector(`ul.column[data-id="${cardData.list_id}"] [slot="list-content"]`);
   listElem.appendChild(cardClone);
 }
 

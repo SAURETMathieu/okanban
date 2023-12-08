@@ -63,7 +63,7 @@
           </div>
           <div class="field is-grouped is-justify-content-end">
             <div class="control">
-              <button class="button is-outlined is-success">
+              <button class="button is-success">
                 <span class="icon">
                   <i class="fas fa-plus"></i>
                 </span>
@@ -251,8 +251,8 @@
       <div class="card-footer">
         <div class="card-footer-item tags are-small is-justify-content-end" slot="card-tags">
           
-          <span class="tag has-background-primary">
-            <span class="icon has-text-white ">
+          <span class="tag has-background-primary is-clickable" slot="add-tag-btn"  aria-role="button" aria-label="ajouter un tag" >
+            <span class="icon has-text-white">
               <i class="fas fa-plus"></i>
             </span>
         </div>
@@ -261,8 +261,8 @@
   </template>
   <!-- Template pour un tag -->
   <template id="tag-template">
-    <span class="tag is-clickable" slot="tag-id">
-      <span class="icon" slot="tag-icon">
+    <span class="tag" slot="tag-id">
+      <span class="icon is-clickable" aria-role="button" aria-label="supprimer le tag"  slot="tag-close-btn">
         <i class="fas fa-times"></i>
       </span>
       <span slot="tag-name"></span>
