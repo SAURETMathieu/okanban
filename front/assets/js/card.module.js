@@ -129,10 +129,10 @@ async function showModal(mode, id) {
 
 async function submitCardForm(event, action) {
   event.preventDefault();
-  const cardFormElem = event.currentTarget;
-  const formData = new FormData(cardFormElem);
+  const formElem = event.currentTarget;
+  const formData = new FormData(formElem);
   const formCardData = Object.fromEntries(formData);
-  cardFormElem.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled'));
+  formElem.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled','true'));
   const card = await action(formCardData);
   if (action === createCard) {
     addCardToList(card);
