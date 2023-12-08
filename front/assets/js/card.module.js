@@ -48,7 +48,7 @@ export function addCardToList(cardData) {
     .querySelector('[slot="remove-card-button"]')
     .addEventListener('click', onDeleteCard);
 
-  if (cardData.tags.length > 0) {
+  if (cardData.tags?.length > 0) {
     const tagContainer = cardClone.querySelector('[slot="card-tags"]');
     cardData.tags.forEach((tag) => {
       const tagTemplate = document.querySelector('#tag-template');
