@@ -1,0 +1,29 @@
+{
+  "name": "s07-okanban-client-blue-benoitoclock",
+  "version": "1.0.0",
+  "description": "## Préparation : intégration",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "npx vite",
+    "build": "npx vite build",
+    "preview": "npx vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "sass": "^1.69.5",
+    "vite": "^5.0.6"
+  },
+  "dependencies": {
+    "bulma": "^0.9.4",
+    "sortablejs": "^1.15.1"
+  }
+}

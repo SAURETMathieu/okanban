@@ -1,0 +1,5 @@
+LISTE: code_liste, nom, ordre
+composer, 0N LISTE, 11 CARTE
+CARTE: code_carte, contenu, couleur, ordre
+posséder, 0N CARTE, 0N LABEL
+LABEL: code_label, nom, couleur

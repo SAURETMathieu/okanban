@@ -1,0 +1,260 @@
+### LISTS ###
+
+### Récupération de toutes les listes
+GET http://localhost:4000/api/lists
+### Récupération d'une liste
+GET http://localhost:4000/api/lists/2
+### Récupération d'une liste inexistante
+GET http://localhost:4000/api/lists/38
+### Récupération d'une liste avec un mauvais paramètre
+GET http://localhost:4000/api/lists/bip
+### Création d'une liste sans position
+POST http://localhost:4000/api/lists
+Content-Type: application/json
+
+{
+    "name": "Ma nouvelle liste"
+}
+### Création d'une liste avec position
+POST http://localhost:4000/api/lists
+Content-Type: application/json
+
+{
+    "name": "Ma nouvelle liste positionnée",
+    "position": 3
+}
+### Création d'une liste sans name
+POST http://localhost:4000/api/lists
+Content-Type: application/json
+
+{
+    "position": 12
+}
+### Création d'une liste avec position invalide
+POST http://localhost:4000/api/lists
+Content-Type: application/json
+
+{
+    "name": "Ma liste mal positionnée",
+    "position": "bip"
+}
+### modification du nom d'une liste
+PATCH http://localhost:4000/api/lists/1
+Content-Type: application/json
+
+{
+    "name": "Ma liste au nom modifié"
+}
+### modification de la position d'une liste
+PATCH http://localhost:4000/api/lists/1
+Content-Type: application/json
+
+{
+    "position": 2
+}
+### modification du nom et de la position d'une liste
+PATCH http://localhost:4000/api/lists/1
+Content-Type: application/json
+
+{
+    "name": "Ma liste au nom et à la position modifiés",
+    "position": 3
+}
+### modification d'une liste sans données
+PATCH http://localhost:4000/api/lists/1
+Content-Type: application/json
+
+{}
+### modification d'une liste avec un nom qui n'est pas une chaine de caractères
+PATCH http://localhost:4000/api/lists/1
+Content-Type: application/json
+
+{
+  "name": true
+}
+### modification d'une liste avec une position qui n'est pas un nombre
+PATCH http://localhost:4000/api/lists/1
+Content-Type: application/json
+
+{
+  "position": "bip"
+}
+### modification d'une liste qui n'existe pas
+PATCH http://localhost:4000/api/lists/92
+Content-Type: application/json
+
+{
+  "position": 6
+}
+### suppression d'une liste
+DELETE http://localhost:4000/api/lists/1
+### suppression d'une liste qui n'existe pas
+DELETE http://localhost:4000/api/lists/874
+### suppression d'une liste à l'id mal formaté
+DELETE http://localhost:4000/api/lists/bip
+
+
+### CARDS ###
+
+### recupération de toutes les cartes
+GET http://localhost:4000/api/cards
+### recupération d'une carte
+GET http://localhost:4000/api/cards/2
+### recupération d'une carte inexistante
+GET http://localhost:4000/api/cards/72
+### recupération d'une carte avec un mauvais paramètre
+GET http://localhost:4000/api/cards/bip
+### création d'une carte avec toutes les données
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "content": "ma carte de test",
+    "color": "red",
+    "listId": 1,
+    "position": 2
+}
+### création d'une carte avec le minimum de données
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "listId": 1
+}
+### création d'une carte avec toutes les données dans une liste inexistante
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "content": "ma nouvelle carte de test",
+    "listId": 42
+}
+### création d'une carte sans listId
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "content": "ma seconde carte de test"
+}
+### création d'une carte avec content qui n'est pas une chaine de caractères
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "content": true,
+    "listId": 1
+}
+### création d'une carte avec color qui n'est pas une chaine de caractères
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "content" : "carte bidon",
+    "color": true,
+    "listId": 1
+}
+### création d'une carte avec position qui n'est pas un nombre
+POST http://localhost:4000/api/cards
+Content-Type: application/json
+
+{
+    "content": "carte bidon",
+    "position": "bip",
+    "listId": 1
+} 
+### modification d'une carte avec toutes les données
+PATCH http://localhost:4000/api/cards/1
+Content-Type: application/json
+
+{
+    "content": "ma carte de test modifiée",
+    "color": "blue",
+    "listId": 1,
+    "position": 2
+}
+### modification de la position d'une carte
+PATCH http://localhost:4000/api/cards/1
+Content-Type: application/json
+
+{
+    "position": 8
+}
+### modification d'une carte avec des données invalides
+PATCH http://localhost:4000/api/cards/1
+Content-Type: application/json
+
+{
+    "position": true
+}
+### suppression d'une carte
+DELETE http://localhost:4000/api/cards/1
+### association d'une carte à un tag
+POST http://localhost:4000/api/cards/6/tags
+Content-Type: application/json
+
+{
+    "tagId": 3
+}
+### dissocier une carte et un tag
+DELETE http://localhost:4000/api/cards/6/tags/3
+
+
+### TAGS ###
+
+### Récupération de tous les tags
+GET http://localhost:4000/api/tags
+### Récupération d'un tag
+GET http://localhost:4000/api/tags/2
+### Récupération d'un tag inexistant
+GET http://localhost:4000/api/tags/38
+### Récupération d'un tag avec un mauvais paramètre
+GET http://localhost:4000/api/tags/bip
+### Création d'un tag
+POST http://localhost:4000/api/tags
+Content-Type: application/json
+
+{
+    "name": "Mon nouveau tag"
+}
+### Création d'un tag avec une couleur
+POST http://localhost:4000/api/tags
+Content-Type: application/json
+
+{
+    "name": "Mon nouveau tag",
+    "color": "#fc0"
+}
+### Modification d'un tag
+PATCH http://localhost:4000/api/tags/6
+Content-Type: application/json
+
+{
+    "name": "Mon tag modifié"
+}
+### Modification d'un tag
+PATCH http://localhost:4000/api/tags/6
+Content-Type: application/json
+
+{
+    "color": "#fa0",
+    "name": "Mon tag modifié en couleur"
+}
+
+### Modification d'un tag
+PATCH http://localhost:4000/api/tags/6
+Content-Type: application/json
+
+{
+    "color": true
+}
+### Modification d'un tag
+PATCH http://localhost:4000/api/tags/6
+Content-Type: application/json
+
+{
+    "name": 128
+}
+### suppression d'un tag
+DELETE http://localhost:4000/api/tags/6
+### suppression d'un tag qui n'existe pas
+DELETE http://localhost:4000/api/tags/46

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>oKanban</title>
+    <link rel="icon" href="/assets/favicon-FFFV1-Fc.png" />
+    <!-- Custom CSS -->
+
+    <!-- Font Awesome (using version 5, as version >=6 does not provide an out-of-the-box CDN)-->
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+
+    <!-- Custom JS -->
+    <script type="module" crossorigin src="/assets/index-crG0_XQv.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-08gK6NHR.css">
+  </head>
+
+  <body>
+    <div class="container is-fluid">
+      <header class="columns is-vcentered my-1 is-mobile">
+        <div class="column">
+          <h1 class="title is-3">oKanban</h1>
+        </div>
+        <div class="column is-narrow">
+          <button
+            class="button is-primary is-medium is-responsive"
+            id="add-list-btn">
+            <span class="icon is-small">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span>Ajouter une liste</span>
+          </button>
+        </div>
+      </header>
+
+      <main id="lists-container" class="columns is-multiline">
+        <!-- Lists go here -->
+      </main>
+    </div>
+
+    <!-- list modal -->
+    <!-- (add the 'is-active' class to see it : https://bulma.io/documentation/components/modal/#javascript-implementation-example) -->
+    <div class="modal px-4" id="list-modal">
+      <div class="modal-background close-modal"></div>
+      <div class="modal-content box">
+        <h5 class="subtitle is-3 has-text-grey mb-2">
+          <span>Ajouter une liste</span>
+        </h5>
+        <form class="">
+          <div class="field">
+            <label class="label">Nom de la liste</label>
+            <div class="control">
+              <input
+                minlength="3"
+                required
+                class="input"
+                name="name"
+                type="text"
+                placeholder="Liste de tâches" />
+            </div>
+          </div>
+          <div class="field is-grouped is-justify-content-end">
+            <div class="control">
+              <button class="button is-outlined is-success">
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span>Ajouter</span>
+              </button>
+            </div>
+            <div class="control">
+              <button
+                class="button is-outlined is-danger close-modal"
+                type="button">
+                <span>Annuler</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- card modal -->
+    <div class="modal px-4" id="card-modal">
+      <div class="modal-background close-modal"></div>
+
+      <div class="modal-content box">
+        <h5 class="subtitle is-3 has-text-grey mb-2">
+          <span>Ajouter une carte</span>
+        </h5>
+        <form>
+          <div class="field is-grouped">
+            <div class="control is-expanded">
+              <label for="title" class="label">Titre de la carte</label>
+              <div class="control">
+                <input
+                  minlength="3"
+                  required
+                  class="input"
+                  name="title"
+                  type="text"
+                  placeholder="Tâche" />
+              </div>
+            </div>
+
+            <div class="control">
+              <label class="label">Couleur</label>
+              <input class="input" name="color" type="color" value="#ffffff" />
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <label class="label">Contenu de la carte</label>
+              <textarea
+                minlength="3"
+                required
+                class="textarea"
+                placeholder="Téléphoner à M. Dupont"
+                name="content"></textarea>
+            </div>
+          </div>
+
+          <input type="hidden" name="listId" />
+
+          <div class="field is-grouped is-justify-content-end">
+            <div class="control">
+              <button class="button is-success">
+                <span class="icon">
+                  <i class="fas fa-plus"></i>
+                </span>
+                <span>Ajouter</span>
+              </button>
+            </div>
+            <div class="control">
+              <button
+                class="button is-danger is-outlined close-modal"
+                type="button">
+                Annuler
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- error modal -->
+    <div class="modal px-4" id="error-modal">
+      <div class="modal-background close-modal"></div>
+      <div class="modal-content box">
+        <h5 class="subtitle is-3 has-text-grey mb-2">
+          <span>Erreur</span> <span slot="error-status"></span>
+        </h5>
+        <p class="mb-4" slot="error-message"></p>
+        <button class="button close-modal" type="button">Fermer</button>
+      </div>
+    </div>
+
+    <!-- confirm modal -->
+    <div class="modal px-4" id="confirm-modal">
+      <div class="modal-background close-modal"></div>
+      <div class="modal-content box">
+        <h5 class="subtitle is-3 has-text-grey mb-2">
+          <span>Confirmation</span>
+        </h5>
+        <p class="mb-4" slot="confirm-message"></p>
+        <div class="field"></div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button data-accept class="button is-success is-outlined">
+              <span>Oui</span>
+            </button>
+          </div>
+          <div class="control">
+            <button
+              data-refuse
+              class="button is-danger is-outlined"
+              type="button">
+              Non
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <!-- Template pour une liste -->
+  <template id="list-template">
+    <ul
+      class="column is-one-fifth-fullhd is-one-quarter-widescreen is-one-third-desktop is-one-half-tablet"
+      slot="list-id">
+      <div class="message is-info">
+        <div class="message-header">
+          <div class="list-name is-flex-grow-1" slot="list-name"></div>
+          <span
+            class="icon is-clickable"
+            aria-role="button"
+            aria-label="éditer la liste"
+            slot="edit-list-button">
+            <i class="fas fa-pencil-alt"></i>
+          </span>
+          <span
+            class="icon is-clickable"
+            aria-role="button"
+            aria-label="supprimer la liste"
+            slot="remove-list-button">
+            <i class="fas fa-trash-alt"></i>
+          </span>
+          <span
+            class="icon is-clickable"
+            aria-role="button"
+            aria-label="ajouter une carte à la liste"
+            slot="add-card-button">
+            <i class="fas fa-plus"></i>
+          </span>
+        </div>
+        <div class="message-body" slot="list-content">
+          <!-- Cards go here -->
+        </div>
+      </div>
+    </ul>
+  </template>
+
+  <!-- Template pour une carte -->
+  <template id="card-template">
+    <li class="card block is-clipped" slot="card-id">
+      <div class="card-corner" slot="card-color"></div>
+      <div class="card-header">
+        <div class="card-header-title is-clipped">
+          <p slot="card-title"></p>
+        </div>
+        <div class="card-header-icon has-text-grey-light">
+          <span
+            slot="edit-card-button"
+            class="icon is-clickable"
+            aria-role="button"
+            aria-label="Éditer la carte">
+            <i class="fas fa-pencil-alt"></i>
+          </span>
+          <span
+            slot="remove-card-button"
+            class="icon is-clickable"
+            aria-role="button"
+            aria-label="Supprimer la carte">
+            <i class="fas fa-trash-alt"></i>
+          </span>
+        </div>
+      </div>
+      <div class="card-content" slot="card-content"></div>
+      <div class="card-footer">
+        <div class="card-footer-item tags are-small is-justify-content-end" slot="card-tags">
+          
+          <span class="tag has-background-primary">
+            <span class="icon has-text-white ">
+              <i class="fas fa-plus"></i>
+            </span>
+        </div>
+      </div>
+    </li>
+  </template>
+  <template id="tag-template">
+    <span class="tag is-clickable" slot="tag-id">
+      <span class="icon" slot="tag-icon">
+        <i class="fas fa-times"></i>
+      </span>
+      <span slot="tag-name"></span>
+    </span>
+  </template>
+</html>

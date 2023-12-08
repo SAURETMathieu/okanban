@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+// Import a Google Font
+@import url("https://fonts.googleapis.com/css?family=Nunito:300,400,700");
+
+// Update Bulma's global variables
+$family-sans-serif: "Nunito", sans-serif;
+$block-spacing: 0.5rem;
+$message-body-padding: 0.75em;
+$column-gap: 0.5rem;
+$card-header-background-color: #eee;
+$card-header-padding: 0.5rem 0.75rem;
+$card-content-padding: 0.75rem;
+
+@import "bulma/bulma.sass";
+
+.message {
+  opacity: 1;
+  transition: 0.25s all ease-in-out;
+}
+.swap-highlight .message,
+.ghost-hightlight {
+  opacity: 0.5;
+}
+.card-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top-width: 16px;
+  border-top-style: solid;
+  border-top-color: #fff;
+  border-left: 16px solid transparent;
+}
