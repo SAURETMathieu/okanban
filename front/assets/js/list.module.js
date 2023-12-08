@@ -62,6 +62,7 @@ async function showModal(mode, listId) {
   const listData = mode === 'update' ? await getList(listId) : null;
   const modalElem = document.querySelector('#list-modal');
   const formElem = modalElem.querySelector('form');
+  formElem.querySelectorAll('button').forEach((btn) => btn.removeAttribute('disabled'));
   formElem.querySelector('input[name="id"]')?.remove();
   formElem.removeEventListener('submit', submitUpdateList);
   formElem.removeEventListener('submit', submitAddList);
@@ -107,9 +108,10 @@ function closeListModal() {
 
 async function submitListForm(event, action) {
   event.preventDefault();
-  const listFormElem = event.currentTarget;
-  const formData = new FormData(listFormElem);
+  const formElem = event.currentTarget;
+  const formData = new FormData(formElem);
   const formListData = Object.fromEntries(formData);
+  formElem.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled', 'true'));
   const list = await action(formListData);
   if (action === createList) {
     addList(list);
@@ -118,7 +120,7 @@ async function submitListForm(event, action) {
     const listElem = document.querySelector(`.column[data-id="${list.id}"]`);
     listElem.querySelector('[slot="list-name"]').textContent = list.name;
   }
-  closeModal(listFormElem.closest('.modal'));
+  closeModal(formElem.closest('.modal'));
 }
 
 async function submitAddList(event) {

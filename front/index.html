@@ -154,7 +154,7 @@
           <span>Erreur</span> <span slot="error-status"></span>
         </h5>
         <p class="mb-4" slot="error-message"></p>
-        <button class="button close-modal" type="button">Fermer</button>
+        <button data-close class="button close-modal" type="button">Fermer</button>
       </div>
     </div>
 
@@ -222,7 +222,6 @@
       </div>
     </ul>
   </template>
-
   <!-- Template pour une carte -->
   <template id="card-template">
     <li class="card block is-clipped" slot="card-id">
@@ -260,6 +259,7 @@
       </div>
     </li>
   </template>
+  <!-- Template pour un tag -->
   <template id="tag-template">
     <span class="tag is-clickable" slot="tag-id">
       <span class="icon" slot="tag-icon">

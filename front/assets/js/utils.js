@@ -26,7 +26,14 @@ export function showConfirmModal(message) {
 
 export function showErrorModal(errorObject) {
   const modalElem = document.querySelector('#error-modal');
+  modalElem.querySelector('button[data-close]').removeEventListener('click', closeErrorModal)
   modalElem.querySelector('[slot="error-status"]').textContent = errorObject.status;
   modalElem.querySelector('[slot="error-message"]').textContent = errorObject.message;
+  modalElem.querySelector('button[data-close]').addEventListener('click', closeErrorModal);
   modalElem.classList.add('is-active');
+}
+
+function closeErrorModal() {
+  const modalElem = document.querySelector('#error-modal');
+  closeModal(modalElem);
 }
