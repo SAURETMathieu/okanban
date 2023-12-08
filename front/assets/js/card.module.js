@@ -76,7 +76,7 @@ async function showModal(mode, id) {
   const cardData = mode === 'update' ? await getCard(id) : null;
   const modalElem = document.querySelector('#card-modal');
   const formElem = modalElem.querySelector('form');
-
+  formElem.querySelectorAll('button').forEach((btn) => btn.removeAttribute('disabled'));
   formElem.querySelector('input[name="id"]')?.remove();
   formElem.removeEventListener('submit', submitAddCard);
   formElem.removeEventListener('submit', submitUpdateCard);
@@ -132,6 +132,7 @@ async function submitCardForm(event, action) {
   const cardFormElem = event.currentTarget;
   const formData = new FormData(cardFormElem);
   const formCardData = Object.fromEntries(formData);
+  cardFormElem.querySelectorAll('button').forEach((btn) => btn.setAttribute('disabled'));
   const card = await action(formCardData);
   if (action === createCard) {
     addCardToList(card);
