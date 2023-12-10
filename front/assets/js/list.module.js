@@ -19,7 +19,7 @@ export function initSortableLists() {
     swapClass: 'swap-highlight',
     handle: '.message-header',
     onEnd: () => {
-      const lists = document.querySelectorAll('#lists-container>ul');
+      const lists = document.querySelectorAll('#lists-container>div');
       lists.forEach(async (list, index) => {
         const listId = parseInt(list.dataset.id, 10);
         const newPosition = index;

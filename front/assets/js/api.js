@@ -147,3 +147,36 @@ export async function deleteCard(cardId) {
     return false;
   }
 }
+
+export async function associateTagToCard(tagId, cardId){
+  try {
+    const response = await fetch(`${apiBaseUrl}/cards/${cardId}/tags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({tagId}),
+    });
+    return handleResponse(response);
+  } catch (error) {
+    showErrorModal('Une erreur est survenue lors de l\'ajout du tag');
+    return false;
+  }
+}
+
+export async function dissociateTagFromCard(tagId, cardId){
+  try {
+    const response = await fetch(`${apiBaseUrl}/cards/${cardId}/tags/${tagId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      const body = await response.json();
+      showErrorModal(body.error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    showErrorModal('Une erreur est survenue lors de la suppression du tag');
+    return false;
+  }
+}

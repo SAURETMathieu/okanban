@@ -109,7 +109,7 @@ router.post(
  */
 router.delete(
   '/:cardId/tags/:tagId', 
-  validate(dissociateTagCardSchema, 'params'), 
+  validate({schema: dissociateTagCardSchema, source: 'params'}), 
   cardController.removeTag
 );
 

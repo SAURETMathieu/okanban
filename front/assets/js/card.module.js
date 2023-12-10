@@ -4,24 +4,26 @@ import {
   createCard,
   updateCard,
   deleteCard,
+  associateTagToCard,
+  dissociateTagFromCard,
 } from './api.js';
 
 import { closeModal, showConfirmModal } from './utils.js';
 
 export function initSortableCards(listId) {
-  const cardContainer = document.querySelector(`ul[data-id="${listId}"] [slot="list-content"]`);
+  const cardContainer = document.querySelector(`div[slot="list-id"][data-id="${listId}"] [slot="list-content"]`);
   Sortable.create(cardContainer, {
     animation: 250,
     ghostClass: 'ghost-hightlight',
     group: 'cards',
     onEnd: async (event) => {
       const cardId = parseInt(event.item.dataset.id, 10);
-      const newListId = parseInt(event.to.closest('ul').dataset.id, 10);
+      const newListId = parseInt(event.to.closest('div[slot="list-id"]').dataset.id, 10);
 
       await updateCard({ id: cardId, listId: newListId });
 
       const container = event.to.parentElement;
-      const cards = container.querySelectorAll('li');
+      const cards = container.querySelectorAll('.card');
 
       cards.forEach(async (card, index) => {
         const { id } = card.dataset;
@@ -35,7 +37,8 @@ export function initSortableCards(listId) {
 export function addCardToList(cardData) {
   const cardTemplate = document.querySelector('#card-template');
   const cardClone = document.importNode(cardTemplate.content, true);
-  cardClone.querySelector('[slot="card-id"]').dataset.id = cardData.id;
+  const cardElem = cardClone.querySelector('.card');
+  cardElem.dataset.id = cardData.id;
   cardClone.querySelector('[slot="card-title"]').textContent = cardData.title;
   cardClone.querySelector('[slot="card-content"]').textContent = cardData.content;
   cardClone.querySelector('[slot=card-color]').style.borderTopColor = cardData.color;
@@ -48,17 +51,17 @@ export function addCardToList(cardData) {
     .querySelector('[slot="remove-card-button"]')
     .addEventListener('click', onDeleteCard);
 
-  if (cardData.tags?.length > 0) {
-    const tagContainer = cardClone.querySelector('[slot="card-tags"]');
+  cardClone
+    .querySelector('[slot="add-tag-button"]')
+    .addEventListener('click', () => showAddTagModal(cardData.id));
+
+  if(cardData.tags?.length > 0) {
+    const tagsContainer = cardElem.querySelector('[slot="card-tags"]');
     cardData.tags.forEach((tag) => {
-      const tagTemplate = document.querySelector('#tag-template');
-      const tagClone = document.importNode(tagTemplate.content, true);
-      tagClone.querySelector('[slot="tag-name"]').textContent = tag.name;
-      tagContainer.prepend(tagClone);
-      //tagClone.querySelector('[slot="tag-close-btn"]').addEventListener('click', async () => {});
-    })
+      addTagToCard(tag, tagsContainer);
+    });
   }
-  const listElem = document.querySelector(`ul.column[data-id="${cardData.list_id}"] [slot="list-content"]`);
+  const listElem = document.querySelector(`div[slot="list-id"][data-id="${cardData.list_id}"] [slot="list-content"]`);
   listElem.appendChild(cardClone);
 }
 
@@ -139,7 +142,7 @@ async function submitCardForm(event, action) {
     const cardElem = document.querySelector(`.card[data-id="${card.id}"]`);
     cardElem.querySelector('[slot="card-title"]').textContent = card.title;
     cardElem.querySelector('[slot="card-content"]').textContent = card.content;
-    cardElem.querySelector('.card-header').style.borderColor = card.color;
+    cardElem.querySelector('[slot=card-color]').style.borderTopColor = card.color;
   }
   closeCardModal();
 }
@@ -164,4 +167,39 @@ async function onDeleteCard(event) {
   }
 }
 
-export default { addCardToList, showAddCardModal };
+async function addTagToCard(tagData, tagsContainer){
+  const tagTemplate = document.querySelector('#tag-template');
+  const tagClone = document.importNode(tagTemplate.content, true);
+  const tagElem = tagClone.querySelector('.tag');
+  tagElem.dataset.id = tagData.id;
+  tagElem.querySelector('[slot="tag-name"]').textContent = tagData.name;
+  // tagClone.querySelector('[slot="tag-color"]').style.backgroundColor = tag.color;
+  tagElem.querySelector('[slot="tag-close-btn"]').addEventListener('click', async (event) => {
+    const tagId = event.currentTarget.closest('.tag').dataset.id;
+    const cardId = event.currentTarget.closest('.card').dataset.id;
+    if(await dissociateTagFromCard(tagId, cardId)){
+      tagElem.remove();
+    }
+  })
+  tagsContainer.appendChild(tagClone);
+}
+
+function showAddTagModal(cardId) {
+  const modalElem = document.querySelector('#tag-modal');
+  modalElem.classList.add('is-active');
+  // return async () => {
+  //   const modalElem = document.querySelector('#tag-modal');
+  //   const formElem = modalElem.querySelector('form');
+  //   formElem.querySelector('input[name="cardId"]').value = cardId;
+  //   formElem.removeEventListener('submit', submitAddTag);
+  //   modalElem.querySelectorAll('.modal-background, button.close-modal').forEach((elem) => {
+  //     elem.removeEventListener('click', closeTagModal);
+  //   });
+  //   formElem.addEventListener('submit', submitAddTag);
+  //   modalElem.querySelectorAll('.modal-background, button.close-modal').forEach((elem) => {
+  //     elem.addEventListener('click', closeTagModal);
+  //   });
+  //   modalElem.classList.add('is-active');
+  // }
+}
+

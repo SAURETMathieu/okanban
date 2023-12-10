@@ -1,10 +1,11 @@
 function validate(validators){
+  // Si validators est un objet avec les propriétés schema et source, on le place dans un tableau
+  if(!Array.isArray(validators) && validators.schema && validators.source){
+    validators = [validators];
+  }
   // Renvoie une fonction middleware
   return async (request, response, next) => {
-    // Si validators est un objet avec les propriétés schema et source, on le place dans un tableau
-    if(!Array.isArray(validators) && validators.schema && validators.source){
-      validators = [validators];
-    }
+    console.log('validators', validators);
     // À partir du tableau de validateurs, on crée un tableau de promesses de validations
     const validations = validators.map(({schema, source}) => {
       return schema.validateAsync(request[source]);
