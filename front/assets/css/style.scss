@@ -35,10 +35,11 @@ $card-content-padding: 0.75rem;
   border-top-color: #fff;
   border-left: 16px solid transparent;
 }
-.tag .icon:first-child {
-  width: 1rem;
-}
 
 .modal .box {
   padding: 3rem 2rem;
+}
+
+.tag {
+  color: #fff !important;
 }

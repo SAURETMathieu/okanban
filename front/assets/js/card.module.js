@@ -4,6 +4,7 @@ import {
   createCard,
   updateCard,
   deleteCard,
+  getTags,
   associateTagToCard,
   dissociateTagFromCard,
 } from './api.js';
@@ -55,14 +56,16 @@ export function addCardToList(cardData) {
     .querySelector('[slot="add-tag-button"]')
     .addEventListener('click', () => showAddTagModal(cardData.id));
 
+
+  const listElem = document.querySelector(`div[slot="list-id"][data-id="${cardData.list_id}"] [slot="list-content"]`);
+  listElem.appendChild(cardClone);
+  ////
   if(cardData.tags?.length > 0) {
     const tagsContainer = cardElem.querySelector('[slot="card-tags"]');
     cardData.tags.forEach((tag) => {
-      addTagToCard(tag, tagsContainer);
+      addTagToCard(tag, cardData.id);
     });
   }
-  const listElem = document.querySelector(`div[slot="list-id"][data-id="${cardData.list_id}"] [slot="list-content"]`);
-  listElem.appendChild(cardClone);
 }
 
 export function showAddCardModal(listId) {
@@ -152,6 +155,11 @@ function closeCardModal() {
   closeModal(modalElem);
 }
 
+function closeTagModal() {
+  const modalElem = document.querySelector('#tag-modal');
+  closeModal(modalElem);
+}
+
 function submitUpdateCard(event) {
   submitCardForm(event, updateCard);
 }
@@ -167,39 +175,55 @@ async function onDeleteCard(event) {
   }
 }
 
-async function addTagToCard(tagData, tagsContainer){
+async function addTagToCard(tagData, cardId) {
   const tagTemplate = document.querySelector('#tag-template');
   const tagClone = document.importNode(tagTemplate.content, true);
   const tagElem = tagClone.querySelector('.tag');
   tagElem.dataset.id = tagData.id;
   tagElem.querySelector('[slot="tag-name"]').textContent = tagData.name;
-  // tagClone.querySelector('[slot="tag-color"]').style.backgroundColor = tag.color;
-  tagElem.querySelector('[slot="tag-close-btn"]').addEventListener('click', async (event) => {
-    const tagId = event.currentTarget.closest('.tag').dataset.id;
-    const cardId = event.currentTarget.closest('.card').dataset.id;
-    if(await dissociateTagFromCard(tagId, cardId)){
-      tagElem.remove();
-    }
-  })
+  tagElem.style.backgroundColor = tagData.color;
+  const tagsContainer = document.querySelector(`.card[data-id="${cardId}"] [slot="card-tags"]`);
   tagsContainer.appendChild(tagClone);
 }
 
-function showAddTagModal(cardId) {
+async function showAddTagModal(cardId) {
   const modalElem = document.querySelector('#tag-modal');
+  const tagsElem = modalElem.querySelector('.tags');
+  tagsElem.innerHTML = '';
+  modalElem.querySelectorAll('.modal-background, button.close-modal').forEach((elem) => {
+    elem.removeEventListener('click', closeTagModal);
+  });
+  const tags = await getTags();
+  const selectedTags = await getCard(cardId).then((card) => card.tags);
+
+  tags.forEach((tag) => {
+    const tagButton = document.createElement('button');
+    tagButton.classList.add('button','is-primary');
+    if(!selectedTags.find((selectedTag) => selectedTag.id === tag.id)){
+      tagButton.classList.add('is-outlined');
+    }
+    tagButton.textContent = tag.name;
+    tagButton.addEventListener('click', async () => {
+      if(tagButton.classList.contains('is-outlined')){
+        if(await associateTagToCard(tag.id, cardId)){
+          tagButton.classList.remove('is-outlined');
+          addTagToCard(tag, cardId);
+        }
+      } else {
+        if(await dissociateTagFromCard(tag.id, cardId)){
+          tagButton.classList.add('is-outlined');
+          document.querySelector(`.card[data-id="${cardId}"] .tag[data-id="${tag.id}"]`).remove();
+        }
+      }
+      tagButton.blur();
+    });
+    tagsElem.prepend(tagButton);
+  });
+
+  modalElem.querySelectorAll('.modal-background, button.close-modal').forEach((elem) => {
+    elem.addEventListener('click', closeTagModal);
+  });
+
   modalElem.classList.add('is-active');
-  // return async () => {
-  //   const modalElem = document.querySelector('#tag-modal');
-  //   const formElem = modalElem.querySelector('form');
-  //   formElem.querySelector('input[name="cardId"]').value = cardId;
-  //   formElem.removeEventListener('submit', submitAddTag);
-  //   modalElem.querySelectorAll('.modal-background, button.close-modal').forEach((elem) => {
-  //     elem.removeEventListener('click', closeTagModal);
-  //   });
-  //   formElem.addEventListener('submit', submitAddTag);
-  //   modalElem.querySelectorAll('.modal-background, button.close-modal').forEach((elem) => {
-  //     elem.addEventListener('click', closeTagModal);
-  //   });
-  //   modalElem.classList.add('is-active');
-  // }
 }
 

@@ -5,7 +5,6 @@ function validate(validators){
   }
   // Renvoie une fonction middleware
   return async (request, response, next) => {
-    console.log('validators', validators);
     // À partir du tableau de validateurs, on crée un tableau de promesses de validations
     const validations = validators.map(({schema, source}) => {
       return schema.validateAsync(request[source]);

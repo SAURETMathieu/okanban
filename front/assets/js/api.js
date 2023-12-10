@@ -5,7 +5,7 @@ async function handleResponse(response) {
   const body = await response.json();
   if (!response.ok) {
     showErrorModal({ status: response.status, message: body.error });
-    return null;
+    return false;
   }
   return body;
 }
@@ -178,5 +178,15 @@ export async function dissociateTagFromCard(tagId, cardId){
   } catch (error) {
     showErrorModal('Une erreur est survenue lors de la suppression du tag');
     return false;
+  }
+}
+
+export async function getTags() {
+  try {
+    // On récupère les tags côté serveur
+    const response = await fetch(`${apiBaseUrl}/tags`);
+    return handleResponse(response);
+  } catch (error) {
+    return showErrorModal('Une erreur est survenue lors de la récupération des tags');
   }
 }

@@ -39,11 +39,12 @@
         <h5 class="subtitle is-3 has-text-grey mb-2">
           <span>Ajouter une liste</span>
         </h5>
-        <form class="">
+        <form>
           <div class="field">
             <label for="list-name-input" class="label">Nom de la liste</label>
             <div class="control">
               <input
+                autocomplete="off"
                 minlength="3"
                 required
                 class="input"
@@ -125,9 +126,7 @@
                 name="content"></textarea>
             </div>
           </div>
-
           <input type="hidden" name="listId" />
-
           <div class="field is-grouped is-justify-content-end">
             <div class="control">
               <button class="button is-success">
@@ -171,7 +170,6 @@
           <span>Confirmation</span>
         </h5>
         <p class="mb-4" slot="confirm-message"></p>
-        <div class="field"></div>
         <div class="field is-grouped">
           <div class="control">
             <button data-accept class="button is-success is-outlined">
@@ -195,8 +193,18 @@
       <div class="modal-background close-modal"></div>
       <div class="modal-content box">
         <h5 class="subtitle is-3 has-text-grey mb-2">
-          <span>Ajouter un tag</span>
+          <span>Modifier les tags</span>
         </h5>
+        <div class="tags buttons"></div>
+        <div class="field is-grouped is-justify-content-end">
+          <div class="control">
+            <button
+              class="button is-outlined is-danger close-modal"
+              type="button">
+              <span>Fermer</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -274,9 +282,9 @@
               class="tag has-background-primary is-clickable"
               slot="add-tag-button"
               aria-role="button"
-              aria-label="ajouter un tag">
+              aria-label="modifier les tag">
               <span class="icon has-text-white">
-                <i class="fas fa-plus"></i>
+                <i class="fas fa-pencil-alt"></i>
               </span>
             </span>
           </div>
@@ -287,13 +295,6 @@
     <!-- Template pour un tag -->
     <template id="tag-template">
       <span class="tag" slot="tag-id">
-        <span
-          class="icon is-clickable"
-          aria-role="button"
-          aria-label="supprimer le tag"
-          slot="tag-close-btn">
-          <i class="fas fa-times"></i>
-        </span>
         <span slot="tag-name"></span>
       </span>
     </template>

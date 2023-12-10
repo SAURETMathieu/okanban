@@ -22,10 +22,10 @@ INSERT INTO "list" ("name","position") VALUES
   ('Création du projet', 'Cette carte concerne la création du projet. Nous devons définir les objectifs, les délais et les ressources nécessaires.', '#ffffff', 5, 1);
 
 INSERT INTO "tag" ("name", "color") VALUES
-  ('Urgent', '#F00'),
-  ('Important', '#0F0'),
-  ('À discuter', '#00F'),
-  ('Abandonné', '#FF0');
+  ('Urgent', 'hsl(348, 100%, 61%)'),
+  ('Important', 'hsl(48, 100%, 67%)'),
+  ('À discuter', 'hsl(204, 86%, 53%)'),
+  ('Abandonné', 'hsl(0, 0%, 96%)');
 INSERT INTO "card_has_tag" ("card_id", "tag_id") VALUES 
   (1, 1),
   (1, 2),
