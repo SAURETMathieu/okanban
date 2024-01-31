@@ -17,6 +17,7 @@ export function initSortableCards(listId) {
     animation: 250,
     ghostClass: 'ghost-hightlight',
     group: 'cards',
+    handle: '.card-header',
     onEnd: async (event) => {
       const cardId = parseInt(event.item.dataset.id, 10);
       const newListId = parseInt(event.to.closest('div[slot="list-id"]').dataset.id, 10);
