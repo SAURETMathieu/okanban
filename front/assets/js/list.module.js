@@ -10,7 +10,6 @@ import { closeModal, showConfirmModal } from './utils.js';
 import { showAddCardModal, initSortableCards } from './card.module.js';
 
 export function initSortableLists() {
-  Sortable.mount(new Swap());
   const listsContainer = document.getElementById('lists-container');
 
   Sortable.create(listsContainer, {

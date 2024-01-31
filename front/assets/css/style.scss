@@ -42,4 +42,23 @@ $card-content-padding: 0.75rem;
 
 .tag {
   color: #fff !important;
+  text-shadow: 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000;
+  border:solid 1px rgb(66, 66, 66);
+}
+
+.message-header,
+.card-header{
+  cursor:pointer;
+}
+
+.card{
+  border: solid 1px rgb(177, 177, 177);
+}
+
+.card-footer{
+  background-color:#eee;
+}
+
+.message{
+  border:solid 1px #3E8ED0;
 }
